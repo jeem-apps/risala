@@ -1,0 +1,42 @@
+name: تذكير تلغرام اليومي
+
+on:
+  schedule:
+    - cron: "30 5 * * *"   # 09:00 Tehran
+    - cron: "30 17 * * *"  # 21:00 Tehran
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "morning or evening"
+        default: "morning"
+
+permissions:
+  contents: write
+
+jobs:
+  remind:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Send reminder
+        env:
+          TELEGRAM_TOKEN: ${{ secrets.TELEGRAM_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          MODE="${{ github.event.inputs.mode }}"
+          if [ -z "$MODE" ]; then
+            if [ "${{ github.event.schedule }}" = "30 17 * * *" ]; then MODE=evening; else MODE=morning; fi
+          fi
+          node scripts/reminder.mjs "$MODE"
+      # GitHub pauses scheduled workflows after 60 days without activity; a monthly empty commit keeps them alive.
+      - name: Keep schedule alive
+        if: github.event.schedule == '30 5 * * *'
+        run: |
+          if [ "$(date -u +%d)" = "01" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898283+github-actions[bot]@users.noreply.github.com"
+            git commit --allow-empty -m "keepalive" && git push
+          fi

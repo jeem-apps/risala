@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0f766e">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="الرسالة">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<title>متابعة رسالة الدكتوراه</title>
+<style>@font-face{font-family:"Vazirmatn";src:url("fonts/vazirmatn-arabic.woff2") format("woff2");font-weight:100 900;font-display:swap;unicode-range:U+0600-06FF,U+0750-077F,U+0870-088E,U+0890-0891,U+0897-08E1,U+08E3-08FF,U+200C-200E,U+2010-2011,U+204F,U+2E41,U+FB50-FDFF,U+FE70-FE74,U+FE76-FEFC}@font-face{font-family:"Vazirmatn";src:url("fonts/vazirmatn-latin.woff2") format("woff2");font-weight:100 900;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}</style>
+<style>
+:root{
+  --bg:#f3f5f7; --card:#ffffff; --ink:#0f1f24; --muted:#64717a; --line:#e6eaee;
+  --accent:#0f766e; --accent-2:#14b8a6; --accent-soft:#e6f6f4; --gold:#d97706; --danger:#dc2626;
+  --s0:#94a3b8; --s1:#f59e0b; --s2:#3b82f6; --s3:#8b5cf6; --s4:#10b981;
+  --radius:22px;
+  --shadow:0 1px 2px rgba(16,24,40,.04),0 6px 20px rgba(16,24,40,.05);
+  --safe-b: env(safe-area-inset-bottom, 0px);
+  --safe-t: env(safe-area-inset-top, 0px);
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:"Vazirmatn",system-ui,sans-serif;font-size:16px;line-height:1.75;-webkit-font-smoothing:antialiased;font-feature-settings:"ss01"}
+button,input,select,textarea{font:inherit;color:inherit}
+header.top{position:sticky;top:0;z-index:20;background:rgba(243,245,247,.85);backdrop-filter:saturate(1.6) blur(14px);-webkit-backdrop-filter:saturate(1.6) blur(14px);padding:calc(12px + var(--safe-t)) 18px 10px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+header.top h1{font-size:20px;margin:0;font-weight:800;letter-spacing:-.2px}
+.sync{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px;white-space:nowrap;background:var(--card);padding:4px 10px;border-radius:99px;box-shadow:var(--shadow)}
+.sync i{width:7px;height:7px;border-radius:50%;background:var(--s0);display:inline-block}
+.sync.ok i{background:var(--s4)} .sync.busy i{background:var(--s1)} .sync.off i{background:var(--danger)}
+main{max-width:640px;margin:0 auto;padding:6px 14px calc(104px + var(--safe-b))}
+nav.tabs{position:fixed;bottom:calc(10px + var(--safe-b));left:12px;right:12px;max-width:560px;margin:0 auto;z-index:30;background:rgba(255,255,255,.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-radius:24px;box-shadow:0 8px 30px rgba(16,24,40,.12);display:flex;justify-content:space-around;padding:6px}
+nav.tabs a{flex:1;text-align:center;text-decoration:none;color:var(--muted);font-size:11.5px;font-weight:500;padding:6px 0 4px;border-radius:18px;transition:background .2s,color .2s}
+nav.tabs a svg{display:block;margin:0 auto 1px;width:22px;height:22px}
+nav.tabs a.on{color:var(--accent);background:var(--accent-soft);font-weight:700}
+.card{background:var(--card);border-radius:var(--radius);padding:18px;margin-bottom:14px;box-shadow:var(--shadow)}
+.card h2{font-size:17px;margin:0 0 10px;font-weight:800;letter-spacing:-.2px}
+.card h3{font-size:15.5px;margin:0 0 8px;font-weight:700;line-height:1.6}
+.muted{color:var(--muted);font-size:13px}
+.hero{background:linear-gradient(135deg,#0f766e 0%,#115e59 55%,#134e4a 100%);color:#fff;padding:18px;display:flex;align-items:center;gap:14px;box-shadow:0 10px 30px rgba(15,118,110,.28)}
+.cd{position:relative;flex:none;width:150px;height:150px}
+.cd svg{position:absolute;inset:0}
+.cd .in{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.cd .big{font-size:48px;line-height:1;font-weight:800;letter-spacing:-1px}
+.cd .u{font-size:12.5px;opacity:.85;margin-top:4px;line-height:1.4}
+.hero .info{flex:1;min-width:0;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:10px 12px;font-size:13.5px;line-height:1.75}
+.hero .info .k{opacity:.75;font-size:11.5px;font-weight:500}
+.hero .info .v{font-weight:700;font-size:15px}
+.hero .info hr{border:none;border-top:1px solid rgba(255,255,255,.16);margin:6px 0}
+@media (max-width:360px){.hero{flex-direction:column}.hero .info{width:100%}}
+.row{display:flex;align-items:center;gap:10px}
+.row.sp{justify-content:space-between}
+.bar{height:8px;background:#eef1f4;border-radius:99px;overflow:hidden;flex:1}
+.bar>span{display:block;height:100%;background:linear-gradient(90deg,var(--accent-2),var(--accent));border-radius:99px;transition:width .4s}
+.pct{font-weight:800;min-width:44px;text-align:left;font-size:14px}
+.ring{display:flex;align-items:center;gap:16px}
+.ring svg{flex:none}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center}
+.stats div{background:var(--bg);border-radius:16px;padding:12px 4px}
+.stats b{display:block;font-size:22px;font-weight:800;line-height:1.3}
+.stats span{font-size:12px;color:var(--muted)}
+.part{padding:12px 0;border-top:1px solid var(--line)}
+.part:first-of-type{border-top:none}
+.part .nm{font-weight:700;font-size:15px}
+.tag{display:inline-block;white-space:nowrap;font-size:12px;font-weight:600;padding:2px 10px;border-radius:99px;background:#f1f4f6;color:var(--muted)}
+.tag.late{background:#fee2e2;color:#b91c1c}
+.tag.done{background:#d1fae5;color:#047857}
+.bab{margin:22px 4px 8px;font-size:17px;font-weight:800;color:var(--accent);line-height:1.6;letter-spacing:-.2px}
+.sec-h{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.sec-h h3{flex:1}
+.item{border-top:1px solid var(--line);padding:12px 0}
+.item .t{font-size:14.5px;cursor:pointer;line-height:1.75}
+.item .meta{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:8px}
+select.st{appearance:none;-webkit-appearance:none;border:none;border-radius:99px;padding:3px 14px;font-size:12.5px;font-weight:700;color:#fff;cursor:pointer}
+.st0{background:var(--s0)}.st1{background:var(--s1)}.st2{background:var(--s2)}.st3{background:var(--s3)}.st4{background:var(--s4)}
+.nb{font-size:12px;font-weight:500;padding:2px 10px;border-radius:99px;background:var(--accent-soft);color:var(--accent)}
+.nb.sec{background:#fef3c7;color:#92400e}
+.btn{border:none;background:var(--accent);color:#fff;border-radius:14px;padding:10px 18px;font-weight:700;cursor:pointer;box-shadow:0 2px 8px rgba(15,118,110,.25)}
+.btn.ghost{background:var(--accent-soft);color:var(--accent);box-shadow:none}
+.btn.small{padding:5px 12px;font-size:13px;border-radius:12px}
+.btn.danger{background:#fee2e2;color:#b91c1c;box-shadow:none}
+.icon-btn{background:none;border:none;color:var(--muted);cursor:pointer;padding:4px 6px;font-size:18px;line-height:1;border-radius:10px}
+label.f{display:block;font-size:13px;font-weight:600;color:var(--muted);margin:12px 0 5px}
+input.in,select.in,textarea.in{width:100%;border:1.5px solid var(--line);background:#fbfcfd;border-radius:14px;padding:10px 12px;font-size:16px;outline:none;transition:border-color .2s,background .2s}
+input.in:focus,select.in:focus,textarea.in:focus{border-color:var(--accent-2);background:#fff}
+textarea.in{min-height:84px;resize:vertical;line-height:1.75}
+.seg{display:flex;background:#e9edf0;border-radius:16px;padding:4px;gap:4px;margin-bottom:14px}
+.seg button{flex:1;border:none;background:none;padding:8px;border-radius:12px;font-weight:700;color:var(--muted);cursor:pointer}
+.seg button.on{background:var(--card);color:var(--accent);box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.stpick{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.stpick button{border:2px solid transparent;border-radius:12px;padding:7px 2px;font-size:12px;color:#fff;font-weight:700;cursor:pointer;opacity:.35;transition:opacity .15s}
+.stpick button.on{opacity:1;box-shadow:0 0 0 2px #fff inset}
+.entry{border-top:1px solid var(--line);padding:12px 0}
+.entry:first-child{border-top:none}
+.entry .h{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.entry .d{font-weight:700;font-size:14px}
+.entry .hrs{white-space:nowrap;font-size:13px;color:var(--accent);font-weight:800;background:var(--accent-soft);padding:2px 10px;border-radius:99px}
+.entry .x{white-space:pre-wrap;font-size:14.5px;margin-top:6px}
+.chk{display:flex;gap:10px;align-items:flex-start;border-top:1px solid var(--line);padding:12px 0}
+.chk:first-child{border-top:none}
+.chk input[type=checkbox]{width:22px;height:22px;margin-top:3px;accent-color:var(--accent);flex:none}
+.chk .body{flex:1;min-width:0}
+.chk.done .txt{text-decoration:line-through;color:var(--muted)}
+.txt{white-space:pre-wrap;font-size:14.5px}
+.sheet-bg{position:fixed;inset:0;background:rgba(15,23,30,.4);backdrop-filter:blur(3px);z-index:50;display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:var(--card);width:100%;max-width:640px;border-radius:28px 28px 0 0;padding:10px 18px calc(20px + var(--safe-b));max-height:88vh;overflow:auto;box-shadow:0 -10px 40px rgba(0,0,0,.15)}
+.sheet::before{content:"";display:block;width:40px;height:5px;border-radius:99px;background:#d6dce1;margin:0 auto 12px}
+.sheet h2{margin:0 0 6px;font-size:18px;font-weight:800}
+.sheet .acts{display:flex;gap:8px;margin-top:18px;justify-content:space-between}
+.empty{text-align:center;color:var(--muted);padding:18px 0;font-size:14px}
+.toast{position:fixed;bottom:calc(92px + var(--safe-b));left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;padding:8px 18px;border-radius:99px;font-size:14px;font-weight:600;z-index:60;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.on{opacity:1}
+details.nbk summary{list-style:none;cursor:pointer}
+details.nbk summary::-webkit-details-marker{display:none}
+.d3{display:inline}
+.d3>span+span::before{content:" · ";opacity:.6}
+.d3 .dh{font-weight:700}
+.nbcode{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:12px;background:var(--accent-soft);color:var(--accent);font-weight:800;font-size:15px;margin-left:8px}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.ch{text-align:center;font-size:11px;font-weight:700;color:var(--muted);padding:2px 0}
+.ch.fri{color:var(--danger)}
+.cc{position:relative;border:none;background:#f6f8f9;border-radius:12px;aspect-ratio:1/1.08;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0;cursor:pointer;line-height:1.1}
+.cc.empty{background:none;cursor:default}
+.cc b{font-size:16px;font-weight:700}
+.cc small{font-size:10px;color:var(--muted);margin-top:2px}
+.cc.fri b{color:var(--danger)}
+.cc.hol{background:#fee2e2}.cc.hol b{color:#b91c1c}
+.cc.past{opacity:.45}
+.cc.after{opacity:.2}
+.cc.today{box-shadow:0 0 0 2px var(--accent) inset;background:var(--accent-soft)}
+.cc.dl{background:#0f1f24;opacity:1}.cc.dl b,.cc.dl small{color:#fff}
+.cc .dots{position:absolute;bottom:4px;display:flex;gap:2px}
+.cc .dots em,.legend em{display:inline-block;width:6px;height:6px;border-radius:50%}
+.xg{background:var(--s4)}.xd{background:var(--gold)}.xe{background:var(--s3)}.xh{background:var(--danger)}
+.legend{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px;font-size:12px;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:4px}
+.calnav{font-size:30px;width:40px;height:40px;background:var(--bg);border-radius:12px}
+.calnav:disabled{opacity:.3}
+nav.tabs a{font-size:10.5px}
+/* pace colours: --h is set inline (140 green → 30 orange → 0 red) */
+.pace{--h:140;background:hsl(var(--h) 80% 96%);border:2px solid hsl(var(--h) 65% 62%);box-shadow:0 6px 20px hsl(var(--h) 60% 50% / .14)}
+.pace .bar>span{background:hsl(var(--h) 62% 46%)}
+.pace-tag{display:inline-block;font-size:12px;font-weight:700;color:#fff;background:hsl(var(--h) 62% 42%);border-radius:99px;padding:2px 11px;white-space:nowrap}
+.pace-note{font-size:13px;font-weight:600;color:hsl(var(--h) 60% 28%)}
+.part.pace{border-radius:16px;padding:10px 12px;margin:6px -4px}
+.item.now-item{background:rgba(255,255,255,.75);border-radius:14px;padding:10px 10px;border-top-color:transparent;box-shadow:0 0 0 1.5px hsl(var(--h) 60% 62%)}
+.remind{background:#fee2e2;color:#991b1b;border-radius:18px;padding:10px 14px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:14px;font-weight:600}
+</style>
+</head>
+<body>
+<header class="top">
+  <h1>رسالة الدكتوراه</h1>
+  <div class="row" style="gap:4px"><div class="sync off" id="sync"><i></i><span>جارٍ التحميل…</span></div><button class="icon-btn" data-act="settings" aria-label="الإعدادات" style="font-size:20px">⚙</button></div>
+</header>
+<main id="view"></main>
+<nav class="tabs" id="tabs">
+  <a href="#home" data-v="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l3 2M9 2h6"/></svg>الرئيسية</a>
+  <a href="#calendar" data-v="calendar"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/><circle cx="12" cy="15" r="1.3" fill="currentColor"/></svg>التقويم</a>
+  <a href="#structure" data-v="structure"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h16M7 10h13M10 15h10M10 20h10"/></svg>الهيكل</a>
+  <a href="#notebooks" data-v="notebooks"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 4h11a3 3 0 0 1 3 3v13H8a3 3 0 0 1-3-3z"/><path d="M5 17a3 3 0 0 1 3-3h11"/></svg>الدفاتر</a>
+  <a href="#log" data-v="log"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13 7l4 4"/></svg>السجل</a>
+  <a href="#tasks" data-v="tasks"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2"/></svg>المهام</a>
+</nav>
+<div class="toast" id="toast"></div>
+
+<script>
+const STANDALONE=true;
+const SEED_STRUCTURE={"babs":[{"id":"b1","title":"الباب الأول: الإطار المفاهيمي لفلسفة الفقه وملامح المشروع الفكري للعلامة الطباطبائي"},{"id":"b2","title":"الباب الثاني: استخلاص وتأصيل المباني التأسيسية لفلسفة الفقه عند العلامة الطباطبائي"},{"id":"b3","title":"الباب الثالث: أثر مباني فلسفة الفقه عند العلامة الطباطبائي في علم الفقه ومنهجية الفقيه وقواعد الاستنباط الفقهي"},{"id":"b4","title":"الباب الرابع: الأثر التطبيقي لمباني فلسفة الفقه عند العلامة الطباطبائي في الاستنباط الفقهي (نماذج من الأبواب الفقهية)"}],"sections":[{"id":"s-f1","bab":"b1","short":"الفصل الأول","title":"الفصل الأول: المفاهيم والمصطلحات المركزية لفلسفة الفقه والاستنباط الفقهي","items":[{"id":"f1-1","title":"المبحث الأول: مفهوم «فلسفة الفقه»: نشأته، تمايزه عن الفقه والأصول، وتطوره المعاصر","status":0,"note":"","nb1":"01","nb2":"05"},{"id":"f1-2","title":"المبحث الثاني: مفهوم «الاستنباط الفقهي» و«الدراسة التأصيلية»: الماهية، المرتكزات، وآليات القراءة الاستدلالية","status":0,"note":"","nb1":"01","nb2":"04"}]},{"id":"s-f2","bab":"b1","short":"الفصل الثاني","title":"الفصل الثاني: ملامح المشروع الفكري للعلامة الطباطبائي وموقعه في التأسيس لفلسفة الفقه","items":[{"id":"f2-1","title":"المبحث الأول: الملامح التأسيسية لفكر العلامة الطباطبائي ورؤيته الكونية والمعرفية","status":0,"note":"","nb1":"07","nb2":"03"},{"id":"f2-2","title":"المبحث الثاني: موقع تفسير «الميزان» والمدونات الفلسفية للعلامة في تأصيل البنى التحتية للاجتهاد الفقهي","status":0,"note":"","nb1":"05","nb2":"02"}]},{"id":"s-f3","bab":"b2","short":"الفصل الثالث","title":"الفصل الثالث: المباني المعرفية والاعتبارية لفلسفة الفقه عند العلامة الطباطبائي","items":[{"id":"f3-1","title":"المبحث الأول: المباني المعرفية: الواقعية المعرفية، تكاملية أدوات المعرفة، ومحورية النص القرآني","status":0,"note":"","nb1":"03","nb2":"02"},{"id":"f3-2","title":"المبحث الثاني: المباني الاعتبارية: حقيقة نظرية الاعتباريات، وتمايزها عن الحقائق، وابتناؤها على الحاجات الواقعية","status":0,"note":"","nb1":"03","nb2":"06"}]},{"id":"s-f4","bab":"b2","short":"الفصل الرابع","title":"الفصل الرابع: المباني الأنثروبولوجية والاجتماعية لفلسفة الفقه عند العلامة الطباطبائي","items":[{"id":"f4-1","title":"المبحث الأول: المباني الأنثروبولوجية: أصالة الفطرة، ثنائية البعد المادي والروحي، وتكامل الإنسان في صياغة التكليف","status":0,"note":"","nb1":"02","nb2":"03"},{"id":"f4-2","title":"المبحث الثاني: المباني الاجتماعية والتاريخية: سنة الاجتماع الإنساني، وسنن التاريخ، وعلاقة متغيرات الزمان والمكان بثبات الشريعة","status":0,"note":"","nb1":"04","nb2":"02"}]},{"id":"s-f5","bab":"b2","short":"الفصل الخامس","title":"الفصل الخامس: المباني القيمية والغائية لفلسفة الفقه عند العلامة الطباطبائي","items":[{"id":"f5-1","title":"المبحث الأول: الأسس القيمية للتشريع الفقهي: ابتناء الأحكام على ملاكات الحسن والقبح والمصالح والمفاسد الواقعية","status":0,"note":"","nb1":"03","nb2":"02"},{"id":"f5-2","title":"المبحث الثاني: البعد الغائي: غائية التشريع الإسلامي وارتباط الأحكام بالكمال الإنساني والعدالة الاجتماعية","status":0,"note":"","nb1":"02","nb2":"04"}]},{"id":"s-b2end","bab":"b2","short":"خاتمة الباب الثاني","title":"خاتمة الباب الثاني","items":[{"id":"b2end","title":"خاتمة الباب الثاني: تكامل منظومة المباني عند العلامة الطباطبائي، وبيان ترابطها واستناد بعضها إلى بعض","status":0,"note":"","nb1":"03","nb2":"06"}]},{"id":"s-f6","bab":"b3","short":"الفصل السادس","title":"الفصل السادس: أثر المباني في علم الفقه ومنهجية الفقيه المستنبط وأدواته","items":[{"id":"f6-1","title":"المبحث الأول: أثر المباني الاجتماعية والغائية في تحديد نطاق علم الفقه توسعةً وتضييقًا","status":0,"note":"","nb1":"04","nb2":"01"},{"id":"f6-2","title":"المبحث الثاني: أثر الرؤية القرآنية والتكامل المعرفي في تشكيل العقلية الاستنباطية وتوسيع مدارك فهم النص وموازين الترجيح","status":0,"note":"","nb1":"02","nb2":"05"},{"id":"f6-3","title":"المبحث الثالث: أثر أصالة الفطرة والبعد الغائي والقيمي في استحضار ملاكات الأحكام وتوجيه دلالات الأدلة الشرعية","status":0,"note":"","nb1":"02","nb2":"04"}]},{"id":"s-f7","bab":"b3","short":"الفصل السابع","title":"الفصل السابع: أثر المباني في قواعد الاستنباط الفقهي","items":[{"id":"f7-1","title":"المبحث الأول: أثر نظرية الاعتباريات في فك التداخل بين أحكام العقل البرهاني والعقل العملي الاعتباري في القواعد الاستدلالية","status":0,"note":"","nb1":"03","nb2":"04"},{"id":"f7-2","title":"المبحث الثاني: أثر السنن الاجتماعية والاعتبارية في تأصيل حجية العقل القطعي، وسيرة العقلاء، وتحديد المرجعية التشريعية للعرف","status":0,"note":"","nb1":"04","nb2":"03"}]},{"id":"s-f8","bab":"b4","short":"الفصل الثامن","title":"الفصل الثامن: نماذج تطبيقية في فقه العبادات والأحكام","items":[{"id":"f8-1","title":"المبحث الأول: دراسة استنباطية تأصيلية لنماذج من فقه العبادات","status":0,"note":"","nb1":"04","nb2":"02"},{"id":"f8-2","title":"المبحث الثاني: دراسة استنباطية تأصيلية لنماذج من فقه الأحكام","status":0,"note":"","nb1":"04","nb2":"02"}]},{"id":"s-f9","bab":"b4","short":"الفصل التاسع","title":"الفصل التاسع: نماذج تطبيقية في فقه العقود والإيقاعات","items":[{"id":"f9-1","title":"المبحث الأول: دراسة استنباطية تأصيلية لنماذج من فقه العقود","status":0,"note":"","nb1":"04","nb2":"02"},{"id":"f9-2","title":"المبحث الثاني: دراسة استنباطية تأصيلية لنماذج من فقه الإيقاعات","status":0,"note":"","nb1":"04","nb2":"02"}]},{"id":"s-intro","bab":"","short":"المقدمة","title":"المقدمة","items":[{"id":"intro","title":"المقدمة: مدخل البحث، إشكاليته، أهميته، أهدافه، فرضيته، منهجه، سوابقه، وخطته","status":0,"note":"","nb1":"05","nb2":"01"}]},{"id":"s-concl","bab":"","short":"الخاتمة","title":"الخاتمة","items":[{"id":"concl","title":"الخاتمة: خلاصة النتائج التأصيلية، وأبرز التوصيات، والآفاق المستقبلية للبحث الفقهي","status":0,"note":"","nb1":"06","nb2":""}]},{"id":"s-refs","bab":"","short":"المصادر والمراجع","title":"قائمة المصادر والمراجع","items":[{"id":"refs","title":"قائمة المصادر والمراجع (بطبعات نور المعتمدة)","status":0,"note":"","nb1":"06","nb2":""}]},{"id":"s-review","bab":"","short":"المراجعة النهائية","title":"المراجعة النهائية","items":[{"id":"review","title":"المراجعة النهائية قبل التسليم","status":0,"note":"","nb1":"","nb2":""}]}],"stages":[{"id":"st1","title":"الباب الأول (الفصلان ١ و٢)","end":"2026-12-22","sections":["s-f1","s-f2"]},{"id":"st2","title":"الباب الثاني (الفصول ٣ و٤ و٥ وخاتمة الباب)","end":"2027-03-06","sections":["s-f3","s-f4","s-f5","s-b2end"]},{"id":"st3","title":"الباب الثالث (الفصلان ٦ و٧)","end":"2027-04-21","sections":["s-f6","s-f7"]},{"id":"st4","title":"الباب الرابع (الفصلان ٨ و٩)","end":"2027-06-22","sections":["s-f8","s-f9"]},{"id":"st5","title":"المقدمة والخاتمة والمصادر والمراجعة النهائية والتسليم","end":"2027-07-23","sections":["s-intro","s-concl","s-refs","s-review"]}]};
+const SEED_SETTINGS={"deadline":"2027-07-23","start":"2026-11-11","supervisor":"السيد ياسر قطيش","hijriOffset":0};
+
+
+const NOTEBOOKS=[
+ {code:"01",name:"فلسفة الفقه – الإطار النظري",serves:"الباب الأول (الإطار المفهومي)",desc:"كتب فلسفة الفقه المحوّلة ودراستان عن الاعتباريات وعلم الأصول ومحاضرة في فلسفة أصول الفقه"},
+ {code:"02",name:"الميزان – النص المعتمد",serves:"الأبواب كلها",desc:"الميزان بأجزائه العشرين (طبعة الأعلمي في نور)"},
+ {code:"03",name:"المباني الفلسفية والمعرفية والاعتباريات",serves:"الباب الثاني (المباني)",desc:"بداية الحكمة، نهاية الحكمة، أصول الفلسفة، البرهان، الرسائل، الإنسان والعقيدة، ودراسات الاعتباريات"},
+ {code:"04",name:"الفقه والأصول والفكر الاجتماعي",serves:"الأثر والتطبيق",desc:"حاشية الكفاية، آيات الأحكام في الميزان، الثابت والمتغير، روابط اجتماعى، مقالات تأسيسية…"},
+ {code:"05",name:"دراسات في منهج الطباطبائي",serves:"الدراسات السابقة والمنهج",desc:"دراسات عن منهج الميزان التفسيري والروائي والدلالي، و«٧٢٧ سؤالًا»"},
+ {code:"06",name:"آثار العلامة الكاملة",serves:"مرجع شامل لكل الأبواب",desc:"كل مؤلفات العلامة بكل نسخها وطبعاتها"},
+ {code:"07",name:"حياة العلامة ومشروعه العلمي",serves:"التعريف بالعلامة",desc:"ترجمته الذاتية، مهر تابان، الشمس الساطعة، كتب السيرة والتأبين"}
+];
+const STATUS=["لم يبدأ","جمع المادة","كتابة المسودة","مراجعة","منتهٍ"];
+const WEIGHT=[0,25,50,75,100];
+const PMONTHS=["فروردين","أرديبهشت","خرداد","تير","مرداد","شهريور","مهر","آبان","آذر","دي","بهمن","إسفند"];
+const GMONTHS=["كانون الثاني","شباط","آذار","نيسان","أيار","حزيران","تموز","آب","أيلول","تشرين الأول","تشرين الثاني","كانون الأول"];
+const WEEKDAYS=["الأحد","الاثنين","الثلاثاء","الأربعاء","الخميس","الجمعة","السبت"];
+
+/* ---------- helpers ---------- */
+const AD="٠١٢٣٤٥٦٧٨٩";
+const ar=v=>String(v).replace(/[0-9]/g,d=>AD[d]).replace(/\./g,"٫");
+const fromAr=s=>String(s).replace(/[٠-٩]/g,d=>AD.indexOf(d)).replace(/[۰-۹]/g,d=>"۰۱۲۳۴۵۶۷۸۹".indexOf(d)).replace(/[٫,،]/g,".");
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const uid=()=>Math.random().toString(36).slice(2,9)+Date.now().toString(36).slice(-4);
+const clone=o=>JSON.parse(JSON.stringify(o));
+function todayISO(){return new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Tehran",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date())}
+const isoToDate=iso=>new Date(iso+"T12:00:00Z");
+const dayDiff=(a,b)=>Math.round((isoToDate(b)-isoToDate(a))/864e5);
+const addDays=(iso,n)=>{const d=isoToDate(iso);d.setUTCDate(d.getUTCDate()+n);return d.toISOString().slice(0,10)};
+const pFmt=new Intl.DateTimeFormat("en-u-ca-persian-nu-latn",{timeZone:"UTC",year:"numeric",month:"numeric",day:"numeric"});
+function persian(iso){const p={};for(const x of pFmt.formatToParts(isoToDate(iso)))p[x.type]=x.value;return `${ar(+p.day)} ${PMONTHS[+p.month-1]} ${ar(parseInt(p.year))}`}
+function greg(iso){const d=isoToDate(iso);return `${ar(d.getUTCDate())} ${GMONTHS[d.getUTCMonth()]} ${ar(d.getUTCFullYear())}`}
+const HMONTHS=["محرّم","صفر","ربيع الأول","ربيع الثاني","جمادى الأولى","جمادى الآخرة","رجب","شعبان","شهر رمضان","شوّال","ذو القعدة","ذو الحجّة"];
+const hFmt=new Intl.DateTimeFormat("en-u-ca-islamic-umalqura-nu-latn",{timeZone:"UTC",year:"numeric",month:"numeric",day:"numeric"});
+/* lunar month starts: official Iranian calendar 1405 (to Shawwal 1448); later months predicted (Umm al-Qura) */
+const HSTARTS=[["2026-10-12",1448,5,1],["2026-11-11",1448,6,1],["2026-12-11",1448,7,1],["2027-01-10",1448,8,1],["2027-02-08",1448,9,1],["2027-03-10",1448,10,1],["2027-04-08",1448,11,0],["2027-05-07",1448,12,0],["2027-06-06",1449,1,0],["2027-07-05",1449,2,0],["2027-08-03",1449,3,0],["2027-09-02",1449,4,0]];
+function hijriParts(iso){const off=+((state.settings&&state.settings.hijriOffset)||0);const d=addDays(iso,off);
+  if(d>=HSTARTS[0][0]&&d<HSTARTS[HSTARTS.length-1][0]){let e=HSTARTS[0];for(const x of HSTARTS){if(x[0]<=d)e=x;else break}return {y:e[1],m:e[2],d:dayDiff(e[0],d)+1,official:!!e[3]}}
+  const p={};for(const x of hFmt.formatToParts(isoToDate(d)))p[x.type]=x.value;return {y:parseInt(p.year),m:+p.month,d:+p.day,official:false}}
+function hijri(iso){const h=hijriParts(iso);return `${ar(h.d)} ${HMONTHS[h.m-1]} ${ar(h.y)}هـ`}
+function persianParts(iso){const p={};for(const x of pFmt.formatToParts(isoToDate(iso)))p[x.type]=x.value;return {y:parseInt(p.year),m:+p.month,d:+p.day}}
+/* three calendars: lunar Hijri first (personal), solar Hijri (university), Gregorian */
+function dates3(iso,cls){return `<span class="d3 ${cls||""}"><span class="dh">${hijri(iso)}</span><span class="ds">${persian(iso)}هـ.ش</span><span class="dg">${greg(iso)}م</span></span>`}
+const weekday=iso=>WEEKDAYS[isoToDate(iso).getUTCDay()];
+const fmtNum=(n,dp=1)=>ar(Number.isInteger(n)?n:(+n.toFixed(dp)));
+function daysWord(n){n=Math.abs(n);if(n===1)return "يوم واحد";if(n===2)return "يومان";if(n>=3&&n<=10)return ar(n)+" أيام";return ar(n)+" يومًا"}
+function hoursWord(h){return fmtNum(h)+" "+(h>=3&&h<=10&&Number.isInteger(h)?"ساعات":"ساعة")}
+function toast(m){const t=document.getElementById("toast");t.textContent=m;t.classList.add("on");clearTimeout(toast._t);toast._t=setTimeout(()=>t.classList.remove("on"),1600)}
+
+/* ---------- state & persistence ---------- */
+const DOCS=["structure","log","tasks","settings","events"];
+/* official Iranian public holidays (1405 from the published official calendar; 1406 fixed dates certain, lunar ones estimated ±1 day until the 1406 calendar is published) */
+const HOLIDAYS=[
+ ["2026-11-13","شهادة السيدة فاطمة الزهراء (ع)"],["2026-12-23","ولادة الإمام علي (ع)"],["2027-01-06","المبعث النبوي الشريف"],
+ ["2027-01-24","ولادة الإمام المهدي (عج) – النصف من شعبان"],["2027-02-11","ذكرى انتصار الثورة الإسلامية"],["2027-02-28","شهادة الإمام علي (ع)"],
+ ["2027-03-10","عيد الفطر"],["2027-03-11","عطلة عيد الفطر"],["2027-03-20","يوم تأميم النفط"],
+ ["2027-03-21","عيد النوروز"],["2027-03-22","عيد النوروز"],["2027-03-23","عيد النوروز"],["2027-03-24","عيد النوروز"],
+ ["2027-04-01","يوم الجمهورية الإسلامية"],["2027-04-02","يوم الطبيعة (سيزده‌بدر)"],
+ ["2027-04-03","شهادة الإمام الصادق (ع)",1],["2027-05-16","عيد الأضحى",1],["2027-05-24","عيد الغدير",1],
+ ["2027-06-04","ذكرى رحيل الإمام الخميني"],["2027-06-05","ذكرى انتفاضة ١٥ خرداد"],
+ ["2027-06-14","تاسوعاء",1],["2027-06-15","عاشوراء",1]
+].map(([date,title,prov])=>({date,title,prov:!!prov}));
+const DEFAULTS={structure:()=>clone(SEED_STRUCTURE),log:()=>({entries:[]}),tasks:()=>({tasks:[],notes:[]}),settings:()=>clone(SEED_SETTINGS),events:()=>({events:[]})};
+const LS="thesis-tracker-v1:";
+const state={};
+for(const k of DOCS){let v=null;try{v=JSON.parse(localStorage.getItem(LS+k)||"null")}catch(e){}state[k]=v||DEFAULTS[k]()}
+let db=null, dbMode="loading"; // loading | ok | off
+const writing={},queued={},timers={},loaded={};
+function cacheLocal(k){try{localStorage.setItem(LS+k,JSON.stringify(state[k]))}catch(e){}}
+function setSync(){const el=document.getElementById("sync");const busy=Object.values(writing).some(Boolean)||Object.values(timers).some(Boolean);
+  if(STANDALONE){el.className="sync ok";el.querySelector("span").textContent="محفوظ على الجهاز";return}
+  el.className="sync "+(dbMode==="off"?"off":busy?"busy":dbMode==="ok"?"ok":"busy");
+  el.querySelector("span").textContent=dbMode==="off"?"محفوظ على هذا الجهاز فقط":busy?"جارٍ الحفظ…":dbMode==="ok"?"محفوظ":"جارٍ التحميل…";}
+function save(k){cacheLocal(k);if(!db){setSync();return}clearTimeout(timers[k]);timers[k]=setTimeout(()=>{timers[k]=null;flush(k)},600);setSync()}
+async function flush(k){if(writing[k]){queued[k]=true;return}writing[k]=true;setSync();
+  try{await db.doc("thesis/"+k).set(clone(state[k]))}
+  catch(e){if(e&&e.code==="unavailable"){await new Promise(r=>setTimeout(r,800+Math.random()*800));try{await db.doc("thesis/"+k).set(clone(state[k]))}catch(e2){toast("تعذّر الحفظ في السحابة؛ البيانات محفوظة على الجهاز")}}
+    else toast("تعذّر الحفظ في السحابة؛ البيانات محفوظة على الجهاز")}
+  writing[k]=false;if(queued[k]){queued[k]=false;flush(k)}setSync()}
+function commit(k){save(k);render()}
+
+async function initDb(){
+  if(STANDALONE){dbMode="local";try{navigator.storage&&navigator.storage.persist&&navigator.storage.persist()}catch(e){}setSync();render();return}
+  try{db=await (window.claude&&window.claude.use?window.claude.use("db"):Promise.resolve(null))}catch(e){db=null}
+  if(!db){dbMode="off";setSync();render();return}
+  const timer=setTimeout(()=>{if(dbMode==="loading"){toast("لم تصل البيانات من السحابة بعد");}},10000);
+  for(const k of DOCS){
+    db.doc("thesis/"+k).onSnapshot(snap=>{
+      if(writing[k]||timers[k])return; // local edits in flight win
+      if(snap.exists){state[k]=clone(snap.data());cacheLocal(k)}
+      else if(!snap.metadata.fromCache && !loaded[k]){flush(k)} // first use: store current (local or template)
+      if(!snap.metadata.fromCache){loaded[k]=true;if(DOCS.every(d=>loaded[d])){dbMode="ok";clearTimeout(timer)}}
+      setSync();if(!sheetOpen)render();
+    },err=>{dbMode="off";clearTimeout(timer);setSync()});
+  }
+}
+
+/* ---------- derived ---------- */
+const S=()=>state.structure;
+const allItems=()=>S().sections.flatMap(s=>s.items.map(i=>({...i,sec:s})));
+const findItem=id=>{for(const s of S().sections){const i=s.items.find(x=>x.id===id);if(i)return {item:i,sec:s}}return null};
+const secPct=s=>s.items.length?Math.round(s.items.reduce((a,i)=>a+WEIGHT[i.status||0],0)/s.items.length):0;
+const overallPct=()=>{const it=allItems();return it.length?Math.round(it.reduce((a,i)=>a+WEIGHT[i.status||0],0)/it.length):0};
+const stagePct=st=>{const its=S().sections.filter(s=>st.sections.includes(s.id)).flatMap(s=>s.items);return its.length?Math.round(its.reduce((a,i)=>a+WEIGHT[i.status||0],0)/its.length):0};
+function pace(){
+  const st=state.settings,t=todayISO(),secs=S().sections,N=Math.max(1,secs.length);
+  const total=Math.max(1,dayDiff(st.start,st.deadline)),per=total/N;
+  const elapsed=Math.max(0,Math.min(total,dayDiff(st.start,t)));
+  const actual=secs.reduce((a,x)=>a+secPct(x)/100,0);
+  const lag=Math.round((elapsed/per-actual)*per); // days behind (+) or ahead (-)
+  const r=Math.max(0,Math.min(1,lag/per));
+  const h=lag<=1?140:r<=.35?Math.round(140-105*(r/.35)):Math.round(35-35*((r-.35)/.65));
+  const label=lag<-1?`متقدّم على الجدول ${daysWord(-lag)}`:lag<=1?"على الجدول تمامًا":r<=.35?`متأخر قليلًا: ${daysWord(lag)}`:`متأخر ${daysWord(lag)} — يحتاج تعويضًا`;
+  return {h,lag,label};
+}
+const currentPart=()=>S().sections.find(s=>s.items.length&&secPct(s)<100)||null;
+function tehranHour(){return +new Intl.DateTimeFormat("en-GB",{timeZone:"Asia/Tehran",hour:"2-digit",hour12:false}).format(new Date())%24}
+function remindBanner(t){const has=state.log.entries.some(e=>e.date===t);if(has||tehranHour()<21)return "";
+  return `<div class="remind"><span>تجاوزت الساعة ٩ ليلًا ولم تسجّل إنجاز اليوم بعد.</span><a class="btn small" href="#log" style="text-decoration:none;background:#b4432f;border-color:#b4432f">سجّل الآن</a></div>`}
+const nbName=c=>{const n=NOTEBOOKS.find(x=>x.code===c);return n?n.name:""};
+function itemLabel(id){const f=findItem(id);if(!f)return "";return f.sec.short+(f.sec.items.length>1?" – "+f.item.title.split(":")[0]:"")}
+
+/* ---------- views ---------- */
+let view="home", taskTab="tasks", sheetOpen=false, openSecs=null;
+function bar(p){return `<div class="row"><div class="bar"><span style="width:${p}%"></span></div><div class="pct">${ar(p)}٪</div></div>`}
+
+function vHome(){
+  const st=state.settings, t=todayISO(), left=dayDiff(t,st.deadline);
+  const secs=S().sections, unfinished=secs.filter(s=>secPct(s)<100);
+  const share=unfinished.length?left/unfinished.length:0;
+  const total=dayDiff(st.start,st.deadline), per=total/secs.length;
+  const pct=overallPct(), C=2*Math.PI*44;
+  const totalDays=Math.max(1,dayDiff(st.start,st.deadline)), frac=Math.max(0,Math.min(1,left/totalDays)), RC=2*Math.PI*64;
+  const ringCol=frac>0.5?"#7fd0a8":frac>0.25?"#e9c46a":"#f08a76";
+  const cur=currentPart(), curItem=cur?cur.items.find(i=>(i.status||0)<4):null;
+  const curStage=(S().stages||[]).find(g=>stagePct(g)<100);
+  const P=pace();
+  const nowCard=cur?`<div class="card pace" style="--h:${P.h}"><div class="row sp"><span class="pace-tag">تعمل عليه الآن</span><a href="#structure" class="btn ghost small" style="text-decoration:none">فتح الهيكل</a></div>
+    <div class="pace-note" style="margin-top:6px">● ${P.label}</div><h2 style="margin:6px 0 2px">${esc(cur.short||cur.title)}</h2>${curItem?`<div style="font-size:14.5px">${esc(curItem.title)}</div><div class="meta" style="margin-top:6px;display:flex;gap:6px;flex-wrap:wrap"><span class="st st${curItem.status||0}" style="border-radius:99px;padding:1px 10px;font-size:12px;color:#fff">${STATUS[curItem.status||0]}</span>${curItem.nb1?`<span class="nb">${ar(curItem.nb1)} ${esc(nbName(curItem.nb1))}</span>`:""}</div>`:""}
+    <div style="margin-top:8px">${bar(secPct(cur))}</div></div>`:"";
+  const entries=state.log.entries;
+  const wkStart=addDays(t,-6);
+  const wk=entries.filter(e=>e.date>=wkStart&&e.date<=t).reduce((a,e)=>a+(+e.hours||0),0);
+  const tot=entries.reduce((a,e)=>a+(+e.hours||0),0);
+  const todayH=entries.filter(e=>e.date===t).reduce((a,e)=>a+(+e.hours||0),0);
+  const its=allItems();const cnt=[0,0,0,0,0];its.forEach(i=>cnt[i.status||0]++);
+  let parts="";
+  secs.forEach((s,idx)=>{const p=secPct(s), due=addDays(st.start,Math.round(per*(idx+1))), dl=dayDiff(t,due);
+    let tag=p>=100?`<span class="tag done">منتهٍ</span>`:dl<0?`<span class="tag late">متأخر ${daysWord(dl)}</span>`:`<span class="tag">باقٍ ${daysWord(dl)}</span>`;
+    const isNow=cur&&s.id===cur.id;
+    parts+=`<div class="part${isNow?" pace":""}" ${isNow?`style="--h:${P.h}"`:""}><div class="row sp"><span class="nm">${esc(s.short||s.title)} ${isNow?`<span class="pace-tag">الآن</span>`:""}</span>${tag}</div>
+      <div class="muted">الموعد المقترح: ${dates3(due)}</div>${bar(p)}</div>`});
+  let stages="";
+  (S().stages||[]).forEach(sg=>{const p=stagePct(sg), dl=dayDiff(t,sg.end);
+    const tag=p>=100?`<span class="tag done">منجزة</span>`:dl<0?`<span class="tag late">متأخرة ${daysWord(dl)}</span>`:`<span class="tag">باقٍ ${daysWord(dl)}</span>`;
+    const isNow=curStage&&sg.id===curStage.id;
+    stages+=`<div class="part${isNow?" pace":""}" ${isNow?`style="--h:${P.h}"`:""}><div class="row sp"><span class="nm" style="font-size:14px">${esc(sg.title)} ${isNow?`<span class="pace-tag">الآن</span>`:""}</span>${tag}</div>
+      <div class="muted">${dates3(sg.end)}</div>${bar(p)}</div>`});
+  return `
+  ${remindBanner(t)}${backupBanner()}
+  <div class="card hero">
+    <div class="cd">
+      <svg viewBox="0 0 148 148" width="148" height="148"><circle cx="74" cy="74" r="64" fill="none" stroke="rgba(255,255,255,.18)" stroke-width="11"/>
+      <circle cx="74" cy="74" r="64" fill="none" stroke="${ringCol}" stroke-width="11" stroke-linecap="round" stroke-dasharray="${RC}" stroke-dashoffset="${RC*(1-frac)}" transform="rotate(-90 74 74)"/></svg>
+      <div class="in"><div class="big">${ar(Math.max(left,0))}</div><div class="u">${left===1?"يوم":left===2?"يومان":(left>=3&&left<=10?"أيام":"يومًا")}<br>للتسليم</div></div>
+    </div>
+    <div class="info">
+      <div class="k">التسليم النهائي</div>
+      <div class="v">${hijri(st.deadline)}</div>
+      <div>${persian(st.deadline)}هـ.ش</div>
+      <div>${greg(st.deadline)}م</div>
+      <hr>
+      <div class="k">اليوم، ${weekday(t)}</div>
+      <div class="v">${hijri(t)}</div>
+      <div>${persian(t)}هـ.ش — ${greg(t)}م</div>
+      <hr>
+      <div>≈ ${ar(Math.floor(Math.max(left,0)/7))} أسبوعًا، ومضى ${ar(Math.round((1-frac)*100))}٪ من المدة</div>
+    </div>
+  </div>
+  ${nowCard}
+  <div class="card">
+    <div class="ring">
+      <svg width="104" height="104" viewBox="0 0 104 104"><circle cx="52" cy="52" r="44" fill="none" stroke="#eef1f4" stroke-width="10"/>
+      <circle cx="52" cy="52" r="44" fill="none" stroke="var(--accent)" stroke-width="10" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C*(1-pct/100)}" transform="rotate(-90 52 52)"/>
+      <text x="52" y="60" text-anchor="middle" font-size="24" font-weight="700" fill="var(--ink)" font-family="Vazirmatn">${ar(pct)}٪</text></svg>
+      <div style="flex:1">
+        <h2 style="margin-bottom:4px">إنجاز الرسالة</h2>
+        <div class="muted">${ar(its.length)} مبحثًا: ${ar(cnt[4])} منتهٍ، ${ar(cnt[3])} في المراجعة، ${ar(cnt[2])} في المسودة، ${ar(cnt[1])} في جمع المادة، ${ar(cnt[0])} لم يبدأ</div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <h2>توزيع الوقت بالتساوي</h2>
+    <div class="muted" style="margin-bottom:8px">الأجزاء غير المنتهية: ${ar(unfinished.length)} من ${ar(secs.length)} — نصيب كل جزء الآن: <b style="color:var(--ink)">${fmtNum(share)}</b> يومًا.<br>الموعد المقترح لكل جزء محسوب بتقسيم المدة من ${hijri(st.start)} (${persian(st.start)}هـ.ش) إلى يوم التسليم على ${ar(secs.length)} أجزاء (≈ ${fmtNum(per)} يومًا لكل جزء).</div>
+    ${parts}
+  </div>
+  <div class="card">
+    <h2>مراحل الخطة الزمنية (من الطرح التفصيلي)</h2>
+    ${stages}
+  </div>
+  <div class="card">
+    <div class="row sp" style="margin-bottom:10px"><h2 style="margin:0">ساعات العمل</h2><button class="btn small" data-act="quicklog">+ سجلّ اليوم</button></div>
+    <div class="stats"><div><b>${fmtNum(todayH)}</b><span>اليوم</span></div><div><b>${fmtNum(wk)}</b><span>آخر ٧ أيام</span></div><div><b>${fmtNum(tot)}</b><span>المجموع</span></div></div>
+  </div>`;
+}
+
+function itemRow(i,isNow){
+  return `<div class="item${isNow?" now-item":""}" data-item="${i.id}">${isNow?`<span class="pace-tag" style="margin-bottom:4px">المبحث الحالي</span>`:""}
+    <div class="t" data-act="edit-item" data-id="${i.id}">${esc(i.title)}</div>
+    <div class="meta">
+      <select class="st st${i.status||0}" data-act="status" data-id="${i.id}">${STATUS.map((s,k)=>`<option value="${k}" ${k==(i.status||0)?"selected":""}>${s}</option>`).join("")}</select>
+      ${i.nb1?`<span class="nb">${ar(i.nb1)} ${esc(nbName(i.nb1))}</span>`:""}
+      ${i.nb2?`<span class="nb sec">${ar(i.nb2)} ${esc(nbName(i.nb2))}</span>`:""}
+      ${i.note?`<span class="tag">✎ ملاحظة</span>`:""}
+    </div></div>`;
+}
+function secCard(s){
+  const cur=currentPart(), isNow=cur&&cur.id===s.id, ci=isNow?s.items.find(i=>(i.status||0)<4):null;
+  const P=pace();
+  return `<div class="card${isNow?" pace":""}" ${isNow?`id="now-sec" style="--h:${P.h}"`:""}>${isNow?`<div class="row" style="gap:8px;flex-wrap:wrap;margin-bottom:6px"><span class="pace-tag">تعمل عليه الآن</span><span class="pace-note">${P.label}</span></div>`:""}<div class="sec-h"><h3>${esc(s.title)}</h3><button class="icon-btn" data-act="edit-sec" data-id="${s.id}" aria-label="تعديل">⋯</button></div>
+    ${bar(secPct(s))}
+    ${s.items.map(i=>itemRow(i,ci&&ci.id===i.id)).join("")}
+    <div style="margin-top:8px"><button class="btn ghost small" data-act="add-item" data-id="${s.id}">+ مبحث</button></div></div>`;
+}
+function vStructure(){
+  const s=S();let html=`<div class="muted" style="margin:0 2px 8px">اضغط على عنوان المبحث لتعديله وربطه بالدفاتر، وغيّر الحالة من الزرّ الملوّن.</div>`;
+  let lastBab=null;
+  for(const sec of s.sections){
+    if(sec.bab!==lastBab){if(sec.bab){const b=s.babs.find(x=>x.id===sec.bab);
+        const its=s.sections.filter(x=>x.bab===sec.bab).flatMap(x=>x.items);const p=its.length?Math.round(its.reduce((a,i)=>a+WEIGHT[i.status||0],0)/its.length):0;
+        html+=`<div class="bab">${esc(b?b.title:"")}</div><div style="margin:0 2px 10px">${bar(p)}</div>`}
+      else if(lastBab) html+=`<div style="height:8px"></div>`;
+      lastBab=sec.bab}
+    html+=secCard(sec);
+  }
+  html+=`<button class="btn ghost" style="width:100%" data-act="add-sec">+ إضافة قسم (فصل أو جزء)</button>`;
+  return html;
+}
+function vNotebooks(){
+  const its=allItems();
+  return `<div class="muted" style="margin:0 2px 10px">الدفاتر السبعة مرتّبة برقم المجلد. الأخضر = الدفتر الأساسي للمبحث، والذهبي = المساعد.</div>`+
+  NOTEBOOKS.map(n=>{const pri=its.filter(i=>i.nb1===n.code), sec=its.filter(i=>i.nb2===n.code);
+    const list=a=>a.map(i=>`<div class="item"><div class="t" data-act="edit-item" data-id="${i.id}"><span class="tag">${esc(i.sec.short)}</span> ${esc(i.title.split(":")[0])}${i.title.includes(":")?": "+esc(i.title.split(":").slice(1).join(":")):""}</div><div class="meta"><span class="st st${i.status||0}" style="border-radius:99px;padding:1px 10px;font-size:12px;color:#fff">${STATUS[i.status||0]}</span></div></div>`).join("");
+    return `<div class="card"><details class="nbk"><summary><div class="row sp"><div><span class="nbcode">${ar(n.code)}</span><b>${esc(n.name)}</b></div><span class="tag">${ar(pri.length)} + ${ar(sec.length)}</span></div>
+      <div class="muted">يخدم: ${esc(n.serves)} — ${esc(n.desc)}</div></summary>
+      ${pri.length?`<h3 style="margin-top:12px;color:var(--accent)">دفتر أساسي لـ:</h3>${list(pri)}`:""}
+      ${sec.length?`<h3 style="margin-top:12px;color:#7d6223">دفتر مساعد لـ:</h3>${list(sec)}`:""}
+      ${!pri.length&&!sec.length?`<div class="empty">لم يُربط بأي مبحث بعد${n.code==="06"?" (وهو مرجع عام لكل الأبواب)":""}</div>`:""}
+    </details></div>`}).join("");
+}
+function itemOptions(sel){return `<option value="">— بلا ربط —</option>`+S().sections.map(s=>`<optgroup label="${esc(s.short||s.title)}">${s.items.map(i=>`<option value="${i.id}" ${i.id===sel?"selected":""}>${esc(i.title.slice(0,60))}</option>`).join("")}</optgroup>`).join("")}
+function vLog(){
+  const t=todayISO(), es=[...state.log.entries].sort((a,b)=>b.date.localeCompare(a.date)||(b.ts||0)-(a.ts||0));
+  const tot=es.reduce((a,e)=>a+(+e.hours||0),0), days=new Set(es.map(e=>e.date)).size;
+  const wk=es.filter(e=>e.date>=addDays(t,-6)).reduce((a,e)=>a+(+e.hours||0),0);
+  return `<div class="card"><h2>سجلّ اليوم</h2>
+    <form id="logform">
+      <label class="f">التاريخ</label><input class="in" type="date" name="date" value="${t}" max="${t}" data-act="datepv"><div class="muted" id="datepv" style="margin-top:4px">${dates3(t)}</div>
+      <label class="f">ماذا أنجزت؟</label><textarea class="in" name="text" placeholder="مثلًا: جمعت شواهد الميزان على أصالة الفطرة من الجزء ١٦"></textarea>
+      <div class="row" style="gap:8px;align-items:flex-end">
+        <div style="flex:1"><label class="f">عدد الساعات</label><input class="in" name="hours" inputmode="decimal" placeholder="٣٫٥"></div>
+        <div style="flex:2"><label class="f">المبحث (اختياري)</label><select class="in" name="item">${itemOptions("")}</select></div>
+      </div>
+      <button class="btn" style="width:100%;margin-top:12px">حفظ</button>
+    </form></div>
+  <div class="card"><div class="stats"><div><b>${fmtNum(wk)}</b><span>ساعات آخر ٧ أيام</span></div><div><b>${fmtNum(tot)}</b><span>مجموع الساعات</span></div><div><b>${ar(days)}</b><span>أيام عمل</span></div></div></div>
+  <div class="card"><h2>السجلّ</h2>${es.length?es.map(e=>`<div class="entry"><div class="h"><span class="d">${weekday(e.date)} ${hijri(e.date)}<br><span class="muted" style="font-weight:400">${persian(e.date)}هـ.ش — ${greg(e.date)}م</span></span><span class="row" style="gap:4px"><span class="hrs">${hoursWord(+e.hours||0)}</span><button class="icon-btn" data-act="edit-log" data-id="${e.id}" aria-label="تعديل">⋯</button></span></div>
+     ${e.item?`<div style="margin-top:4px"><span class="tag">${esc(itemLabel(e.item))}</span></div>`:""}<div class="x">${esc(e.text)}</div></div>`).join(""):`<div class="empty">لا يوجد شيء في السجلّ بعد.</div>`}</div>`;
+}
+const NOTE_ST=["لم تُعرض","عُرضت","أجاب المشرف"];
+function vTasks(){
+  const sup=state.settings.supervisor||"المشرف";
+  const head=`<div class="seg"><button data-act="ttab" data-t="tasks" class="${taskTab==="tasks"?"on":""}">المهام المؤجلة</button><button data-act="ttab" data-t="notes" class="${taskTab==="notes"?"on":""}">ملاحظات للمشرف</button></div>`;
+  if(taskTab==="tasks"){
+    const ts=state.tasks.tasks, open=ts.filter(x=>!x.done), done=ts.filter(x=>x.done);
+    const row=x=>`<div class="chk ${x.done?"done":""}"><input type="checkbox" data-act="tdone" data-id="${x.id}" ${x.done?"checked":""}><div class="body"><div class="txt">${esc(x.text)}</div>${x.item?`<span class="tag">${esc(itemLabel(x.item))}</span>`:""}</div><button class="icon-btn" data-act="edit-task" data-id="${x.id}">⋯</button></div>`;
+    return head+`<div class="card"><form id="taskform"><textarea class="in" name="text" placeholder="مهمة مؤجلة…" style="min-height:60px"></textarea>
+      <label class="f">المبحث (اختياري)</label><select class="in" name="item">${itemOptions("")}</select>
+      <button class="btn" style="width:100%;margin-top:10px">إضافة</button></form></div>
+      <div class="card"><h2>مفتوحة (${ar(open.length)})</h2>${open.length?open.map(row).join(""):`<div class="empty">لا مهام مفتوحة.</div>`}</div>
+      ${done.length?`<div class="card"><h2>منجزة (${ar(done.length)})</h2>${done.map(row).join("")}</div>`:""}`;
+  }
+  const ns=state.tasks.notes;
+  const order=[0,1,2];
+  return head+`<div class="card"><h2>ملاحظات وأسئلة لـ${esc(sup)}</h2><form id="noteform"><textarea class="in" name="text" placeholder="ما تريد عرضه على المشرف في اللقاء القادم…" style="min-height:70px"></textarea><button class="btn" style="width:100%;margin-top:10px">إضافة</button></form></div>`+
+   order.map(k=>{const list=ns.filter(n=>(n.status||0)===k);if(!list.length)return "";
+     return `<div class="card"><h2>${NOTE_ST[k]} (${ar(list.length)})</h2>${list.map(n=>`<div class="chk"><div class="body"><div class="txt">${esc(n.text)}</div>
+       ${n.reply?`<div class="muted" style="margin-top:4px;white-space:pre-wrap">↩ ${esc(n.reply)}</div>`:""}<div class="muted" style="font-size:12px;margin-top:2px">${hijri(n.date||todayISO())} — ${persian(n.date||todayISO())}هـ.ش</div></div><button class="icon-btn" data-act="edit-note" data-id="${n.id}">⋯</button></div>`).join("")}</div>`}).join("")||"";
+}
+
+/* ---------- calendar ---------- */
+let calMode="h", calKey=null;
+const WD=["سبت","أحد","اثنين","ثلاثاء","أربعاء","خميس","جمعة"];
+const wdIdx=iso=>(isoToDate(iso).getUTCDay()+1)%7; // Saturday = 0
+const isFri=iso=>isoToDate(iso).getUTCDay()===5;
+function holidayOn(iso){return HOLIDAYS.filter(h=>h.date===iso)}
+function eventsOn(iso){return ((state.events&&state.events.events)||[]).filter(e=>e.date===iso)}
+function isOff(iso){return isFri(iso)||holidayOn(iso).length>0||eventsOn(iso).some(e=>e.off)}
+function partDues(){const st=state.settings,secs=S().sections,per=dayDiff(st.start,st.deadline)/secs.length;return secs.map((x,i)=>({date:addDays(st.start,Math.round(per*(i+1))),title:"الموعد المقترح: "+(x.short||x.title)}))}
+function dayItems(iso){const st=state.settings,it=[];
+  holidayOn(iso).forEach(h=>it.push({k:"hol",t:h.title+(h.prov?" (تقديري ±١ يوم)":"")}));
+  eventsOn(iso).forEach(e=>it.push({k:e.off?"hol":"ev",t:e.title+(e.off?" (تعطيل)":""),id:e.id}));
+  if(iso===st.deadline)it.push({k:"dl",t:"التسليم النهائي"});
+  partDues().filter(d=>d.date===iso&&iso!==st.deadline).forEach(d=>it.push({k:"due",t:d.title}));
+  (S().stages||[]).filter(g=>g.end===iso&&iso!==st.deadline).forEach(g=>it.push({k:"due",t:"نهاية مرحلة: "+g.title}));
+  return it}
+function workDaysLeft(){const st=state.settings,t=todayISO();let w=0,fr=0,ho=0;for(let d=t;d<st.deadline;d=addDays(d,1)){if(isFri(d))fr++;else if(isOff(d))ho++;else w++}return {w,fr,ho}}
+function monthKeyOf(iso){if(calMode==="h"){const h=hijriParts(iso);return h.y+"-"+h.m}const p=persianParts(iso);return p.y+"-"+p.m}
+function calMonths(){const st=state.settings,t=todayISO();const from=addDays(t<st.start?t:st.start,-35),to=addDays(st.deadline,35);const groups=[];let cur=null;
+  for(let d=from;d<=to;d=addDays(d,1)){const k=monthKeyOf(d);if(!cur||cur.key!==k){cur={key:k,days:[]};groups.push(cur)}cur.days.push(d)}
+  const lo=t<st.start?t:st.start;return groups.filter(g=>g.days[g.days.length-1]>=lo&&g.days[0]<=st.deadline&&(g.days[0].slice(8)!=="xx"))}
+function monthTitle(g){const a=g.days[0],b=g.days[g.days.length-1];
+  if(calMode==="h"){const h=hijriParts(a);const pa=persianParts(a),pb=persianParts(b);const ga=isoToDate(a),gb=isoToDate(b);
+    return {main:`${HMONTHS[h.m-1]} ${ar(h.y)}هـ`,sub:`${PMONTHS[pa.m-1]}${pa.m!==pb.m?"–"+PMONTHS[pb.m-1]:""} ${ar(pb.y)}هـ.ش · ${GMONTHS[ga.getUTCMonth()]}${ga.getUTCMonth()!==gb.getUTCMonth()?"–"+GMONTHS[gb.getUTCMonth()]:""} ${ar(gb.getUTCFullYear())}م`,est:!hijriParts(a).official}}
+  const p=persianParts(a);const ha=hijriParts(a),hb=hijriParts(b);const ga=isoToDate(a),gb=isoToDate(b);
+  return {main:`${PMONTHS[p.m-1]} ${ar(p.y)}هـ.ش`,sub:`${HMONTHS[ha.m-1]}${ha.m!==hb.m?"–"+HMONTHS[hb.m-1]:""} ${ar(hb.y)}هـ · ${GMONTHS[ga.getUTCMonth()]}${ga.getUTCMonth()!==gb.getUTCMonth()?"–"+GMONTHS[gb.getUTCMonth()]:""} ${ar(gb.getUTCFullYear())}م`,est:false}}
+function vCalendar(){
+  const st=state.settings,t=todayISO(),months=calMonths();
+  let idx=months.findIndex(g=>g.key===calKey);if(idx<0){idx=months.findIndex(g=>g.days.includes(t));if(idx<0)idx=0}
+  const g=months[idx];calKey=g.key;const T=monthTitle(g);const W=workDaysLeft();
+  const logDays=new Set(state.log.entries.map(e=>e.date));const dues=new Set(partDues().map(d=>d.date).concat((S().stages||[]).map(x=>x.end)));
+  let cells="";for(let i=0;i<wdIdx(g.days[0]);i++)cells+=`<div class="cc empty"></div>`;
+  for(const d of g.days){const main=calMode==="h"?hijriParts(d).d:persianParts(d).d, sub=calMode==="h"?persianParts(d).d:hijriParts(d).d;
+    const hol=holidayOn(d).length||eventsOn(d).some(e=>e.off), ev=eventsOn(d).some(e=>!e.off);
+    const cls=["cc",isFri(d)?"fri":"",hol?"hol":"",d===t?"today":"",d<t?"past":"",d>st.deadline?"after":"",d===st.deadline?"dl":""].join(" ");
+    cells+=`<button class="${cls}" data-act="cal-day" data-d="${d}"><b>${ar(main)}</b><small>${ar(sub)}</small><i class="dots">${logDays.has(d)?'<em class="xg"></em>':""}${dues.has(d)&&d!==st.deadline?'<em class="xd"></em>':""}${ev?'<em class="xe"></em>':""}${hol?'<em class="xh"></em>':""}</i></button>`}
+  const items=[];for(const d of g.days){if(d>st.deadline)continue;dayItems(d).forEach(x=>items.push({d,...x}))}
+  return `<div class="card"><div class="stats"><div><b>${ar(dayDiff(t,st.deadline))}</b><span>يومًا باقيًا</span></div><div><b>${ar(W.fr+W.ho)}</b><span>جمعة وتعطيل</span></div><div><b style="color:var(--accent)">${ar(W.w)}</b><span>يوم عمل فعلي</span></div></div></div>
+  <div class="card">
+    <div class="seg"><button data-act="calmode" data-m="h" class="${calMode==="h"?"on":""}">الأشهر القمرية</button><button data-act="calmode" data-m="p" class="${calMode==="p"?"on":""}">الأشهر الشمسية</button></div>
+    <div class="row sp" style="margin-bottom:10px"><button class="icon-btn calnav" data-act="calnav" data-i="${idx-1}" ${idx<=0?"disabled":""}>›</button>
+      <div style="text-align:center"><div style="font-weight:800;font-size:18px">${T.main}</div><div class="muted" style="font-size:12px">${T.sub}</div>${T.est?'<div class="muted" style="font-size:11px">بداية الشهر تقديرية حتى صدور التقويم الرسمي</div>':""}</div>
+      <button class="icon-btn calnav" data-act="calnav" data-i="${idx+1}" ${idx>=months.length-1?"disabled":""}>‹</button></div>
+    <div class="cal">${WD.map((w,i)=>`<div class="ch${i===6?" fri":""}">${w}</div>`).join("")}${cells}</div>
+    <div class="legend"><span><em class="xh"></em>تعطيل رسمي</span><span><em class="xd"></em>موعد مقترح</span><span><em class="xg"></em>يوم مسجَّل</span><span><em class="xe"></em>مناسبة خاصة</span></div>
+  </div>
+  <div class="card"><h2>في هذا الشهر</h2>${items.length?items.map(x=>`<div class="entry" data-act="cal-day" data-d="${x.d}" style="cursor:pointer"><div class="h"><span class="d">${esc(x.t)}</span><span class="tag ${x.k==="hol"?"late":x.k==="dl"?"late":x.k==="due"?"":"done"}">${x.k==="hol"?"تعطيل":x.k==="dl"?"التسليم":x.k==="due"?"موعد":"مناسبة"}</span></div><div class="muted">${weekday(x.d)} ${dates3(x.d)}</div></div>`).join(""):`<div class="empty">لا تعطيل ولا مواعيد في هذا الشهر.</div>`}
+  <div class="muted" style="margin-top:8px">التعطيلات من التقويم الرسمي الإيراني لسنة ١٤٠٥. أما تعطيلات ١٤٠٦ فالثابتة منها مؤكدة، والدينية تقديرية (±١ يوم) حتى يصدر التقويم الرسمي. اضغط على أي يوم لإضافة مناسبة أو تعطيل خاص بالجامعة.</div></div>`;
+}
+function openDay(d){
+  const its=dayItems(d), logs=state.log.entries.filter(e=>e.date===d);
+  openSheet(`<h2>${weekday(d)}</h2><div>${dates3(d)}</div>
+    ${isFri(d)?'<div class="tag late" style="margin-top:6px">جمعة</div>':""}
+    ${its.length?`<div style="margin-top:10px">${its.map(x=>`<div class="row sp entry"><span>${esc(x.t)}</span>${x.id?`<button class="btn danger small" data-del-ev="${x.id}">حذف</button>`:""}</div>`).join("")}</div>`:""}
+    ${logs.length?`<h3 style="margin-top:12px">ما سجّلته</h3>${logs.map(e=>`<div class="entry"><span class="hrs">${hoursWord(+e.hours||0)}</span><div class="x">${esc(e.text)}</div></div>`).join("")}`:""}
+    <h3 style="margin-top:14px">إضافة مناسبة</h3>
+    <input class="in" id="ev-title" placeholder="مثلًا: لقاء المشرف، أو عطلة الجامعة">
+    <label class="row" style="gap:8px;margin-top:8px;font-size:14px"><input type="checkbox" id="ev-off" style="width:20px;height:20px;accent-color:var(--accent)"> يوم تعطيل (لا يُحسب من أيام العمل)</label>
+    <div class="acts"><span></span><div class="row" style="gap:8px"><button class="btn ghost" id="ev-cancel">إغلاق</button><button class="btn" id="ev-save">إضافة</button></div></div>`,
+  sh=>{sh.querySelector("#ev-cancel").onclick=closeSheet;
+    sh.querySelector("#ev-save").onclick=()=>{const title=sh.querySelector("#ev-title").value.trim();if(!title){toast("اكتب عنوان المناسبة");return}
+      state.events.events.push({id:uid(),date:d,title,off:sh.querySelector("#ev-off").checked});save("events");closeSheet();toast("أُضيفت")};
+    sh.querySelectorAll("[data-del-ev]").forEach(b=>b.onclick=()=>{state.events.events=state.events.events.filter(e=>e.id!==b.dataset.delEv);save("events");closeSheet();toast("حُذفت")});});
+}
+
+function render(){
+  const v=document.getElementById("view");
+  v.innerHTML=view==="calendar"?vCalendar():view==="structure"?vStructure():view==="notebooks"?vNotebooks():view==="log"?vLog():view==="tasks"?vTasks():vHome();
+  document.querySelectorAll("#tabs a").forEach(a=>a.classList.toggle("on",a.dataset.v===view));
+}
+
+/* ---------- sheets ---------- */
+function openSheet(html,onMount){
+  closeSheet();sheetOpen=true;
+  const bg=document.createElement("div");bg.className="sheet-bg";bg.id="sheet";
+  bg.innerHTML=`<div class="sheet" role="dialog">${html}</div>`;
+  bg.addEventListener("click",e=>{if(e.target===bg)closeSheet()});
+  document.body.appendChild(bg);onMount&&onMount(bg.querySelector(".sheet"));
+}
+function closeSheet(){const s=document.getElementById("sheet");if(s)s.remove();if(sheetOpen){sheetOpen=false;render()}}
+const nbOpts=sel=>`<option value="">— لا شيء —</option>`+NOTEBOOKS.map(n=>`<option value="${n.code}" ${n.code===sel?"selected":""}>${ar(n.code)} – ${esc(n.name)}</option>`).join("");
+
+function editItem(id,isNew,secId){
+  let item, sec;
+  if(isNew){sec=S().sections.find(s=>s.id===secId);item={id:"m"+uid(),title:"",status:0,note:"",nb1:"",nb2:""}}
+  else{const f=findItem(id);if(!f)return;item=f.item;sec=f.sec}
+  let st=item.status||0;
+  openSheet(`<h2>${isNew?"مبحث جديد":"تعديل المبحث"}</h2><div class="muted">${esc(sec.title)}</div>
+    <label class="f">العنوان</label><textarea class="in" id="e-title" style="min-height:96px">${esc(item.title)}</textarea>
+    <label class="f">الحالة</label><div class="stpick">${STATUS.map((s,k)=>`<button type="button" class="st${k} ${k===st?"on":""}" data-k="${k}">${s}</button>`).join("")}</div>
+    <label class="f">الدفتر الأساسي</label><select class="in" id="e-nb1">${nbOpts(item.nb1)}</select>
+    <label class="f">الدفتر المساعد</label><select class="in" id="e-nb2">${nbOpts(item.nb2)}</select>
+    <label class="f">ملاحظة</label><textarea class="in" id="e-note" placeholder="مصادر، أفكار، ما بقي…">${esc(item.note||"")}</textarea>
+    <div class="acts">${isNew?"<span></span>":`<button class="btn danger" id="e-del">حذف</button>`}<div class="row" style="gap:8px"><button class="btn ghost" id="e-cancel">إلغاء</button><button class="btn" id="e-save">حفظ</button></div></div>`,
+  sh=>{
+    sh.querySelectorAll(".stpick button").forEach(b=>b.onclick=()=>{st=+b.dataset.k;sh.querySelectorAll(".stpick button").forEach(x=>x.classList.toggle("on",x===b))});
+    sh.querySelector("#e-cancel").onclick=closeSheet;
+    sh.querySelector("#e-save").onclick=()=>{const title=sh.querySelector("#e-title").value.trim();if(!title){toast("اكتب العنوان");return}
+      const f=isNew?null:findItem(item.id);const target=f?f.item:item;
+      Object.assign(target,{title,status:st,nb1:sh.querySelector("#e-nb1").value,nb2:sh.querySelector("#e-nb2").value,note:sh.querySelector("#e-note").value});
+      if(isNew){const s2=S().sections.find(s=>s.id===sec.id);s2&&s2.items.push(target)}
+      save("structure");closeSheet();toast("حُفظ")};
+    const del=sh.querySelector("#e-del");if(del)del.onclick=()=>{if(del.dataset.c){const f=findItem(item.id);if(f){f.sec.items=f.sec.items.filter(x=>x.id!==item.id);save("structure")}closeSheet();toast("حُذف")}else{del.dataset.c=1;del.textContent="اضغط مرة أخرى للتأكيد"}};
+  });
+}
+function editSec(id){
+  const isNew=!id;const s=isNew?{id:"s"+uid(),bab:"",short:"",title:"",items:[]}:S().sections.find(x=>x.id===id);if(!s)return;
+  const babs=S().babs;
+  openSheet(`<h2>${isNew?"قسم جديد":"تعديل القسم"}</h2>
+    <label class="f">العنوان الكامل</label><textarea class="in" id="s-title" style="min-height:60px">${esc(s.title)}</textarea>
+    <label class="f">الاسم المختصر (يظهر في الرئيسية)</label><input class="in" id="s-short" value="${esc(s.short||"")}" placeholder="مثلًا: الفصل الثالث">
+    <label class="f">الباب</label><select class="in" id="s-bab"><option value="">— خارج الأبواب —</option>${babs.map(b=>`<option value="${b.id}" ${b.id===s.bab?"selected":""}>${esc(b.title.split(":")[0])}</option>`).join("")}</select>
+    ${isNew?"":`<label class="f">الترتيب</label><div class="row" style="gap:8px"><button class="btn ghost small" id="s-up">↑ أعلى</button><button class="btn ghost small" id="s-down">↓ أسفل</button></div>`}
+    <div class="acts">${isNew?"<span></span>":`<button class="btn danger" id="s-del">حذف</button>`}<div class="row" style="gap:8px"><button class="btn ghost" id="s-cancel">إلغاء</button><button class="btn" id="s-save">حفظ</button></div></div>`,
+  sh=>{
+    sh.querySelector("#s-cancel").onclick=closeSheet;
+    const mv=d=>{const a=S().sections, i=a.findIndex(x=>x.id===s.id), j=i+d;if(j<0||j>=a.length)return;[a[i],a[j]]=[a[j],a[i]];save("structure");toast("نُقل")};
+    if(!isNew){sh.querySelector("#s-up").onclick=()=>mv(-1);sh.querySelector("#s-down").onclick=()=>mv(1)}
+    sh.querySelector("#s-save").onclick=()=>{const title=sh.querySelector("#s-title").value.trim();if(!title){toast("اكتب العنوان");return}
+      const tgt=isNew?s:S().sections.find(x=>x.id===s.id);
+      Object.assign(tgt,{title,short:sh.querySelector("#s-short").value.trim()||title.split(":")[0],bab:sh.querySelector("#s-bab").value});
+      if(isNew){const a=S().sections;let pos=a.length;if(tgt.bab){const last=a.map(x=>x.bab).lastIndexOf(tgt.bab);if(last>=0)pos=last+1}a.splice(pos,0,tgt)}
+      save("structure");closeSheet();toast("حُفظ")};
+    const del=sh.querySelector("#s-del");if(del)del.onclick=()=>{if(del.dataset.c){S().sections=S().sections.filter(x=>x.id!==s.id);(S().stages||[]).forEach(g=>g.sections=g.sections.filter(x=>x!==s.id));save("structure");closeSheet();toast("حُذف")}else{del.dataset.c=1;del.textContent=s.items.length?`سيُحذف معه ${ar(s.items.length)} مبحث — اضغط للتأكيد`:"اضغط للتأكيد"}};
+  });
+}
+function editLog(id){
+  const e=state.log.entries.find(x=>x.id===id);if(!e)return;
+  openSheet(`<h2>تعديل السجلّ</h2>
+    <label class="f">التاريخ</label><input class="in" type="date" id="l-date" value="${e.date}" data-act="datepv"><div class="muted" id="datepv2" style="margin-top:4px">${dates3(e.date)}</div>
+    <label class="f">ماذا أنجزت؟</label><textarea class="in" id="l-text">${esc(e.text)}</textarea>
+    <label class="f">الساعات</label><input class="in" id="l-hours" inputmode="decimal" value="${ar(e.hours||0)}">
+    <label class="f">المبحث</label><select class="in" id="l-item">${itemOptions(e.item||"")}</select>
+    <div class="acts"><button class="btn danger" id="l-del">حذف</button><div class="row" style="gap:8px"><button class="btn ghost" id="l-cancel">إلغاء</button><button class="btn" id="l-save">حفظ</button></div></div>`,
+  sh=>{sh.querySelector("#l-cancel").onclick=closeSheet;
+    sh.querySelector("#l-save").onclick=()=>{const h=parseFloat(fromAr(sh.querySelector("#l-hours").value))||0;const x=state.log.entries.find(y=>y.id===id);if(x)Object.assign(x,{date:sh.querySelector("#l-date").value||x.date,text:sh.querySelector("#l-text").value.trim(),hours:h,item:sh.querySelector("#l-item").value});save("log");closeSheet();toast("حُفظ")};
+    const del=sh.querySelector("#l-del");del.onclick=()=>{if(del.dataset.c){state.log.entries=state.log.entries.filter(x=>x.id!==id);save("log");closeSheet();toast("حُذف")}else{del.dataset.c=1;del.textContent="اضغط للتأكيد"}};});
+}
+function editTask(id){
+  const x=state.tasks.tasks.find(y=>y.id===id);if(!x)return;
+  openSheet(`<h2>تعديل المهمة</h2><textarea class="in" id="t-text">${esc(x.text)}</textarea><label class="f">المبحث</label><select class="in" id="t-item">${itemOptions(x.item||"")}</select>
+    <div class="acts"><button class="btn danger" id="t-del">حذف</button><div class="row" style="gap:8px"><button class="btn ghost" id="t-cancel">إلغاء</button><button class="btn" id="t-save">حفظ</button></div></div>`,
+  sh=>{sh.querySelector("#t-cancel").onclick=closeSheet;
+    sh.querySelector("#t-save").onclick=()=>{const y=state.tasks.tasks.find(z=>z.id===id);if(y){y.text=sh.querySelector("#t-text").value.trim()||y.text;y.item=sh.querySelector("#t-item").value}save("tasks");closeSheet()};
+    const del=sh.querySelector("#t-del");del.onclick=()=>{if(del.dataset.c){state.tasks.tasks=state.tasks.tasks.filter(z=>z.id!==id);save("tasks");closeSheet();toast("حُذفت")}else{del.dataset.c=1;del.textContent="اضغط للتأكيد"}};});
+}
+function editNote(id){
+  const n=state.tasks.notes.find(y=>y.id===id);if(!n)return;let st=n.status||0;
+  openSheet(`<h2>ملاحظة للمشرف</h2><textarea class="in" id="n-text">${esc(n.text)}</textarea>
+    <label class="f">الحالة</label><div class="seg" id="n-st">${NOTE_ST.map((s,k)=>`<button type="button" data-k="${k}" class="${k===st?"on":""}">${s}</button>`).join("")}</div>
+    <label class="f">جواب المشرف أو ما اتُّفق عليه</label><textarea class="in" id="n-reply">${esc(n.reply||"")}</textarea>
+    <div class="acts"><button class="btn danger" id="n-del">حذف</button><div class="row" style="gap:8px"><button class="btn ghost" id="n-cancel">إلغاء</button><button class="btn" id="n-save">حفظ</button></div></div>`,
+  sh=>{sh.querySelectorAll("#n-st button").forEach(b=>b.onclick=()=>{st=+b.dataset.k;sh.querySelectorAll("#n-st button").forEach(x=>x.classList.toggle("on",x===b))});
+    sh.querySelector("#n-cancel").onclick=closeSheet;
+    sh.querySelector("#n-save").onclick=()=>{const y=state.tasks.notes.find(z=>z.id===id);if(y){y.text=sh.querySelector("#n-text").value.trim()||y.text;y.reply=sh.querySelector("#n-reply").value;y.status=st}save("tasks");closeSheet();toast("حُفظ")};
+    const del=sh.querySelector("#n-del");del.onclick=()=>{if(del.dataset.c){state.tasks.notes=state.tasks.notes.filter(z=>z.id!==id);save("tasks");closeSheet();toast("حُذفت")}else{del.dataset.c=1;del.textContent="اضغط للتأكيد"}};});
+}
+
+function editSettings(){
+  const st=state.settings;let off=+(st.hijriOffset||0);const t=todayISO();
+  const pv=()=>{const o=state.settings.hijriOffset;state.settings.hijriOffset=off;const h=hijri(t);state.settings.hijriOffset=o;return h};
+  openSheet(`<h2>الإعدادات</h2>
+    <label class="f">تصحيح التاريخ الهجري القمري (بحسب رؤية الهلال)</label>
+    <div class="muted">الحساب الافتراضي يوافق تقويم إيران الرسمي غالبًا، لكن أول الشهر قد يختلف يومًا بحسب الرؤية. صحّح هنا إن اختلف عندك.</div>
+    <div class="row" style="gap:8px;margin-top:8px;justify-content:center"><button class="btn ghost small" id="h-minus">− يوم</button><b id="h-val" style="min-width:150px;text-align:center"></b><button class="btn ghost small" id="h-plus">+ يوم</button></div>
+    <div class="muted" style="text-align:center;margin-top:4px">اليوم: <span id="h-pv"></span></div>
+    <label class="f">موعد التسليم النهائي</label><input class="in" type="date" id="set-dl" value="${st.deadline}" data-act="datepv"><div class="muted" style="margin-top:4px">${dates3(st.deadline)}</div>
+    <label class="f">بداية توزيع المدة</label><input class="in" type="date" id="set-start" value="${st.start}" data-act="datepv"><div class="muted" style="margin-top:4px">${dates3(st.start)}</div>
+    ${STANDALONE?`<label class="f">النسخة الاحتياطية</label>
+    <div class="muted">بياناتك محفوظة في هذا الهاتف فقط. صدّر نسخة احتياطية كل أسبوع، واحفظها في مكان آمن (تيليجرام أو الملفات أو البريد)، لتستعيدها إن ضاعت أو انتقلت إلى جهاز آخر.${st.lastBackup?`<br>آخر نسخة: ${hijri(st.lastBackup)} — ${persian(st.lastBackup)}هـ.ش`:"<br>لم تُصدَّر نسخة بعد."}</div>
+    <div class="row" style="gap:8px;margin-top:8px"><button class="btn ghost small" id="bk-export">تصدير نسخة</button><label class="btn ghost small" style="cursor:pointer">استيراد نسخة<input type="file" id="bk-import" accept="application/json,.json" style="display:none"></label></div>`:""}
+    <div class="acts"><span></span><div class="row" style="gap:8px"><button class="btn ghost" id="set-cancel">إلغاء</button><button class="btn" id="set-save">حفظ</button></div></div>`,
+  sh=>{if(STANDALONE){sh.querySelector("#bk-export").onclick=exportBackup;sh.querySelector("#bk-import").onchange=e=>importBackup(e.target.files[0])}
+    const upd=()=>{sh.querySelector("#h-val").textContent=off===0?"بلا تصحيح":(off>0?"+":"−")+ar(Math.abs(off))+" يوم";sh.querySelector("#h-pv").textContent=pv()};upd();
+    sh.querySelector("#h-minus").onclick=()=>{if(off>-2){off--;upd()}};sh.querySelector("#h-plus").onclick=()=>{if(off<2){off++;upd()}};
+    sh.querySelector("#set-cancel").onclick=closeSheet;
+    sh.querySelector("#set-save").onclick=()=>{Object.assign(state.settings,{hijriOffset:off,deadline:sh.querySelector("#set-dl").value||st.deadline,start:sh.querySelector("#set-start").value||st.start});save("settings");closeSheet();toast("حُفظ")};});
+}
+
+async function exportBackup(){
+  const t=todayISO();const payload={app:"risala-tracker",version:1,exported:new Date().toISOString(),data:{}};DOCS.forEach(k=>payload.data[k]=state[k]);
+  const name=`risala-backup-${t}.json`;const blob=new Blob([JSON.stringify(payload,null,1)],{type:"application/json"});
+  let done=false;
+  try{const file=new File([blob],name,{type:"application/json"});if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],title:"نسخة احتياطية — متابعة الرسالة"});done=true}}catch(e){if(e&&e.name==="AbortError")return}
+  if(!done){const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500)}
+  state.settings.lastBackup=t;save("settings");closeSheet();toast("صُدّرت النسخة")}
+function importBackup(file){if(!file)return;const r=new FileReader();r.onload=()=>{try{const p=JSON.parse(r.result);if(p.app!=="risala-tracker"||!p.data||!p.data.structure)throw 0;
+    DOCS.forEach(k=>{if(p.data[k]){state[k]=p.data[k];save(k)}});closeSheet();render();toast("استُعيدت البيانات")}catch(e){toast("الملف ليس نسخة صالحة من هذا التطبيق")}};r.readAsText(file)}
+function backupBanner(){if(!STANDALONE)return "";const lb=state.settings.lastBackup,t=todayISO();if(!state.log.entries.length)return "";if(lb&&dayDiff(lb,t)<7)return "";
+  return `<div class="remind" style="background:#fef3c7;color:#92400e"><span>${lb?`مضى ${daysWord(dayDiff(lb,t))} على آخر نسخة احتياطية.`:"لم تحفظ نسخة احتياطية من بياناتك بعد."}</span><button class="btn small" data-act="settings" style="background:#d97706">نسخة الآن</button></div>`}
+
+/* ---------- events ---------- */
+document.addEventListener("click",e=>{
+  const el=e.target.closest("[data-act]");if(!el)return;const a=el.dataset.act;
+  if(a==="status")return;
+  if(a==="edit-item")editItem(el.dataset.id);
+  else if(a==="add-item")editItem(null,true,el.dataset.id);
+  else if(a==="edit-sec")editSec(el.dataset.id);
+  else if(a==="add-sec")editSec(null);
+  else if(a==="edit-log")editLog(el.dataset.id);
+  else if(a==="edit-task")editTask(el.dataset.id);
+  else if(a==="edit-note")editNote(el.dataset.id);
+  else if(a==="ttab"){taskTab=el.dataset.t;render()}
+  else if(a==="quicklog"){location.hash="#log"}
+  else if(a==="settings")editSettings();
+  else if(a==="cal-day")openDay(el.dataset.d);
+  else if(a==="calnav"){const months=calMonths();const i=+el.dataset.i;if(months[i]){calKey=months[i].key;render()}}
+  else if(a==="calmode"){const t=todayISO();calMode=el.dataset.m;const ms=calMonths();const g=ms.find(x=>x.days.includes(t));calKey=g?g.key:null;render()}
+});
+document.addEventListener("change",e=>{
+  const el=e.target;
+  if(el.dataset.act==="status"){const f=findItem(el.dataset.id);if(f){f.item.status=+el.value;commit("structure");toast(STATUS[+el.value])}}
+  else if(el.dataset.act==="tdone"){const x=state.tasks.tasks.find(y=>y.id===el.dataset.id);if(x){x.done=el.checked;commit("tasks")}}
+});
+document.addEventListener("input",e=>{const el=e.target;if(el.dataset&&el.dataset.act==="datepv"&&el.value){const pv=el.nextElementSibling;if(pv)pv.innerHTML=dates3(el.value)}});
+document.addEventListener("submit",e=>{
+  e.preventDefault();const f=e.target, fd=new FormData(f);
+  if(f.id==="logform"){const text=(fd.get("text")||"").trim(), hours=parseFloat(fromAr(fd.get("hours")||""))||0;
+    if(!text&&!hours){toast("اكتب ما أنجزت أو عدد الساعات");return}
+    state.log.entries.push({id:uid(),date:fd.get("date")||todayISO(),text,hours,item:fd.get("item")||"",ts:Date.now()});commit("log");toast("سُجّل")}
+  else if(f.id==="taskform"){const text=(fd.get("text")||"").trim();if(!text)return;state.tasks.tasks.unshift({id:uid(),text,item:fd.get("item")||"",done:false,date:todayISO()});commit("tasks");toast("أُضيفت")}
+  else if(f.id==="noteform"){const text=(fd.get("text")||"").trim();if(!text)return;state.tasks.notes.unshift({id:uid(),text,status:0,reply:"",date:todayISO()});commit("tasks");toast("أُضيفت")}
+});
+function route(){const h=(location.hash||"#home").slice(1);view=["home","calendar","structure","notebooks","log","tasks"].includes(h)?h:"home";closeSheet();render();window.scrollTo(0,0)}
+window.addEventListener("hashchange",route);
+route();setSync();
+initDb();
+</script>
+<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("sw.js").catch(()=>{}))}</script>
+</body>
+</html>
